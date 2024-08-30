@@ -1,8 +1,4 @@
-import {
-  Web3,
-  Web3BaseWalletAccount,
-  DEFAULT_RETURN_FORMAT,
-} from "web3";
+import { Web3, Web3BaseWalletAccount } from "web3";
 import { Wallet } from "web3-eth-accounts";
 import { SwisstronikPlugin } from "../src";
 import { abi } from "./ERC20ABI";
@@ -45,6 +41,20 @@ describe("SwisstronikPlugin Tests", () => {
       }).rejects.toThrow();
     });
 
+    it("Transfer funds to another wallet", async () => {
+      let tx = {
+        to: "0x0497cc339c0397b7Addd591B2160dd2f5371eA3b",
+        from: wallet[0].address,
+        value: 1n,
+      };
+
+      let res = await web3.eth.sendTransaction(tx, undefined, {
+        checkRevertBeforeSending: false,
+      });
+
+      expect(res.status).toEqual(1n);
+    });
+
     it("Call contract on testnet with encrypted data", async () => {
       let tx = {
         to: "0xF8bEB8c8Be514772097103e39C2ccE057117CC92",
@@ -74,7 +84,9 @@ describe("SwisstronikPlugin Tests", () => {
         data: "0x61bc221a",
       };
 
-      let res = await web3.eth.sendTransaction(tx);
+      let res = await web3.eth.sendTransaction(tx, undefined, {
+        checkRevertBeforeSending: false,
+      });
       expect(res.status).toEqual(1n);
     }, 20000);
   });
@@ -106,7 +118,9 @@ describe("SwisstronikPlugin Tests", () => {
       "Should mint ERC20",
       async () => {
         const contract = new web3.eth.Contract(abi, ERC20_CONTRACT_ADDRESS);
-        const res = await contract.methods.mint100tokens().send({from: wallet[0].address});
+        const res = await contract.methods
+          .mint100tokens()
+          .send({ from: wallet[0].address });
 
         expect(res.status).toEqual(1n);
       },
@@ -117,7 +131,9 @@ describe("SwisstronikPlugin Tests", () => {
       "Should transfer ERC20",
       async () => {
         const contract = new web3.eth.Contract(abi, ERC20_CONTRACT_ADDRESS);
-        const res = await contract.methods.transfer(wallet[0].address, 5n).send({from: wallet[0].address});
+        const res = await contract.methods
+          .transfer(wallet[0].address, 5n)
+          .send({ from: wallet[0].address });
 
         expect(res.status).toEqual(1n);
       },

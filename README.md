@@ -45,7 +45,7 @@ import { SwisstronikPlugin } from "@swisstronik/web3-plugin-swisstronik";
 const web3 = new Web3("https://json-rpc.testnet.swisstronik.com/"); // Any RPC node you wanted to connect with
 web3.registerPlugin(new SwisstronikPlugin());
 let wallet = web3.eth.accounts.wallet.add("0x..."); // Private Key
-// Get node public key
+
 let tx = {
   to: '0xF8bEB8c8Be514772097103e39C2ccE057117CC92',
   from: wallet[0].address,
@@ -57,7 +57,9 @@ console.log(callResult);
 let estimateGasResult = await web3.eth.estimateGas(tx);
 console.log(estimateGasResult);
 
-let sentTxReceipt = await web3.eth.sendTransaction(tx);
+let sentTxReceipt = await web3.eth.sendTransaction(tx, undefined, {
+  checkRevertBeforeSending: false,
+});
 console.log(sentTxReceipt);
 
 ```
