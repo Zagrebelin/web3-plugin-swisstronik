@@ -53,7 +53,7 @@ describe("SwisstronikPlugin Tests", () => {
       });
 
       expect(res.status).toEqual(1n);
-    });
+    }, 20000);
 
     it("Call contract on testnet with encrypted data", async () => {
       let tx = {
@@ -65,7 +65,7 @@ describe("SwisstronikPlugin Tests", () => {
       expect(res).toEqual(
         "0x000000000000000000000000000000000000000000000000000000000000050b"
       );
-    });
+    }, 20000);
 
     it("Estimate gas for tx on testnet with encrypted data", async () => {
       let tx = {
@@ -124,7 +124,7 @@ describe("SwisstronikPlugin Tests", () => {
 
         expect(res.status).toEqual(1n);
       },
-      5 * 60 * 1000
+      20000
     );
 
     it(
@@ -137,7 +137,7 @@ describe("SwisstronikPlugin Tests", () => {
 
         expect(res.status).toEqual(1n);
       },
-      5 * 60 * 1000
+      20000
     );
   });
 });
